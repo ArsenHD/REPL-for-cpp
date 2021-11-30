@@ -23,7 +23,8 @@ void load_and_run(int id) {
 int main(int argc, char **argv) {
     std::string line;
     int id = 0;
-    while (std::cin >> line) {
+    while (getline(std::cin, line)) {
+//        std::cout << "!" << line << "!" << std::endl;
         std::string lib_name = get_lib_name(id);
         std::cout << lib_name << std::endl;
         std::ofstream file(lib_name);
