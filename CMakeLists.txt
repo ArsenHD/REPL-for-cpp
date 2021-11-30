@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 #    -g -v -O0 \
 #    -fsanitize=address -fno-omit-frame-pointer -fno-operator-names")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -ldl")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -L./libs -Wl,-rpath=./libs")
 
 add_executable(REPL-for-cpp main.cpp)
+target_link_libraries(REPL-for-cpp dl)

@@ -1,22 +1,19 @@
-//
-// Created by kirill on 29.11.2021.
-//
-
 #include <dlfcn.h>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <vector>
+#include <memory>
 
-static const std::string LIB = "lib";
-static const std::string EXT = ".so";
+const std::string LIB = "lib";
+const std::string EXT = ".so";
 
-static const std::string SOURCE = "SOURCE";
-static const std::string CPP = ".cpp";
+const std::string SOURCE_FILE = "SOURCE";
+const std::string CPP = ".cpp";
 
-static const char *METHOD_NAME = "foo";
+const std::string METHOD_NAME = "foo";
 
-static const std::string TAB = "    ";
+const std::string TAB = "    ";
 
 void print_tabulation(std::ofstream &file, int amount) {
     for (int i = 0; i < amount; i++) {
@@ -25,25 +22,30 @@ void print_tabulation(std::ofstream &file, int amount) {
 }
 
 std::string get_source_file_name(int id) {
-    return SOURCE + std::to_string(id) + CPP;
+    return "../sources/" + SOURCE_FILE + std::to_string(id) + CPP;
 }
 
 std::string get_library_name(int id) {
-    return LIB + std::to_string(id) + EXT;
+    return "../libs/" + LIB + std::to_string(id) + EXT;
 }
 
 void load_and_run(int id) {
     std::string lib_name = get_library_name(id);
-    void *so = dlopen(lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-    auto (*f)() = reinterpret_cast<void (*)()>(dlsym(so, METHOD_NAME));
+    using func_type = void(*)();
+    auto so = dlopen(lib_name.c_str(), RTLD_LAZY);
+    auto f = reinterpret_cast<func_type>(dlsym(so, "_Z3foov"));
     f();
+    dlclose(so);
 }
 
-void generate_source_file(const std::vector <std::string> &lines, std::ofstream &file) {
+void generate_source_file(const std::vector<std::string> &lines, std::ofstream &file) {
+    // TODO: remove next lines
+    file << "#include <iostream>" << std::endl;
+    file << std::endl;
     // TODO: add header includes to the beginning of the file
-    std::string function_header = "void " + SOURCE + "() {";
+    std::string function_header = "void " + METHOD_NAME + "() {";
     file << function_header << std::endl;
-    for (const std::string &line : lines) {
+    for (const std::string &line: lines) {
         print_tabulation(file, 1);
         file << line;
         file << std::endl;
@@ -53,7 +55,7 @@ void generate_source_file(const std::vector <std::string> &lines, std::ofstream 
 }
 
 void build_library(const std::string &source, const std::string &library_name) {
-    std::string command = "g++ -fpic -shared -o " + library_name + " " + source;
+    std::string command = "g++ -fPIC -shared -o " + library_name + " " + source;
     std::system(command.c_str());
 }
 
@@ -61,7 +63,7 @@ int main(int argc, char **argv) {
     std::string current_line;
     int id = 0;
 
-    std::vector <std::string> lines;
+    std::vector<std::string> lines;
 
     while (getline(std::cin, current_line)) {
         std::string lib_name = get_library_name(id);
@@ -76,6 +78,8 @@ int main(int argc, char **argv) {
         source_file.close();
 
         build_library(source_file_name, lib_name);
+
+        load_and_run(id);
         id++;
     }
 
