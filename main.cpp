@@ -63,12 +63,11 @@ int main(int argc, char **argv) {
 
     std::vector <std::string> lines;
 
-    while (std::cin >> current_line) {
+    while (getline(std::cin, current_line)) {
         std::string lib_name = get_library_name(id);
         std::string source_file_name = get_source_file_name(id);
 
         std::ofstream source_file(source_file_name);
-        source_file.open(lib_name);
 
         lines.push_back(current_line);
 
