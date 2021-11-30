@@ -1,15 +1,23 @@
 #pragma once
+
+#include "../model/file_model.hpp"
+
 #include <string>
 #include <vector>
 
-enum FLAG{
-    SIGNATURE,
-    LOAD, // #include
-    CREATE_OBJECT,
-    EXIT,
-    DEFAULT
-};
+namespace Options {
+    enum Flag {
+        SIGNATURE,
+        LOAD, // #include
+        CREATE_OBJECT,
+        EVAL,
+        EXIT,
+        DEFAULT
+    };
 
-FLAG check_for_flag(const std::string& line);
+    Flag check_for_flag(const std::string &line);
 
-void load(std::string& line, std::vector<std::string>& includes);
+    void load_header(std::string &line, FileModel &includes);
+
+    std::string parse_after_flag(const std::string&);
+}
