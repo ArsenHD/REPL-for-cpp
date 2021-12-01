@@ -20,7 +20,7 @@ namespace ast_tools {
     std::vector<std::string> GetSignaturesByPrefix(const std::string& code, const std::string& prefix) {
         std::vector<std::string> signatures;
         clang::tooling::runToolOnCode(
-                std::make_unique<FindFunctionDeclarationsByPrefixAction>(prefix, signatures),
+                std::make_unique<FindFunctionSignaturesByPrefixAction>(prefix, signatures),
                 code
         );
 

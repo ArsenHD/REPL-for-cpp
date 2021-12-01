@@ -1,8 +1,8 @@
-#include "FindFunctionDeclarationsByPrefixVisitor.hpp"
+#include "FindFunctionSignaturesByPrefixVisitor.hpp"
 
 using namespace ast_tools;
 
-std::string FindFunctionDeclarationsByPrefixVisitor::getDeclaration(const clang::FunctionDecl* D) {
+std::string FindFunctionSignaturesByPrefixVisitor::getSignature(const clang::FunctionDecl* D) {
     clang::ASTContext& ctx = D->getASTContext();
     clang::SourceManager& mgr = ctx.getSourceManager();
 
@@ -13,10 +13,10 @@ std::string FindFunctionDeclarationsByPrefixVisitor::getDeclaration(const clang:
     return s.substr(0, s.size() - 2).str().append(";");
 }
 
-bool FindFunctionDeclarationsByPrefixVisitor::VisitFunctionDecl(clang::FunctionDecl* Declaration) {
+bool FindFunctionSignaturesByPrefixVisitor::VisitFunctionDecl(clang::FunctionDecl* Declaration) {
     if (Declaration->getName().startswith(prefix_)) {
         clang::FullSourceLoc FullLocation = Context->getFullLoc(Declaration->getBeginLoc());
-        if (FullLocation.isValid()) signatures_.push_back(getDeclaration(Declaration));
+        if (FullLocation.isValid()) signatures_.push_back(getSignature(Declaration));
     }
     return true;
 }

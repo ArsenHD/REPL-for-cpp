@@ -34,9 +34,9 @@ add_definitions(${CLANG_DEFINITIONS})
 
 add_llvm_executable(ast_processing
         ast/processing_ast.cpp
-        ast/FindFunctionDeclarationsByPrefixVisitor.cpp
-        ast/FindFunctionDeclarationsByPrefixConsumer.cpp
-        ast/FindFunctionDeclarationsByPrefixAction.cpp
+        ast/signatures/FindFunctionSignaturesByPrefixVisitor.cpp
+        ast/signatures/FindFunctionSignaturesByPrefixConsumer.cpp
+        ast/signatures/FindFunctionSignaturesByPrefixAction.cpp
         )
 target_link_libraries(ast_processing
         PRIVATE

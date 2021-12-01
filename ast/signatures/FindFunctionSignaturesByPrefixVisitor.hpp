@@ -5,13 +5,13 @@
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/AST/ASTConsumer.h"
-#include "FindFunctionDeclarationsByPrefixVisitor.hpp"
+#include "FindFunctionSignaturesByPrefixVisitor.hpp"
 
 namespace ast_tools {
-    class FindFunctionDeclarationsByPrefixVisitor
-            : public clang::RecursiveASTVisitor<FindFunctionDeclarationsByPrefixVisitor> {
+    class FindFunctionSignaturesByPrefixVisitor
+            : public clang::RecursiveASTVisitor<FindFunctionSignaturesByPrefixVisitor> {
     public:
-        explicit FindFunctionDeclarationsByPrefixVisitor(
+        explicit FindFunctionSignaturesByPrefixVisitor(
                 clang::ASTContext* Context,
                 std::string prefix,
                 std::vector<std::string>& signatures
@@ -19,7 +19,7 @@ namespace ast_tools {
 
         bool VisitFunctionDecl(clang::FunctionDecl* Declaration);
 
-        static std::string getDeclaration(const clang::FunctionDecl* D);
+        static std::string getSignature(const clang::FunctionDecl* D);
     private:
         clang::ASTContext* Context;
         std::string prefix_;
