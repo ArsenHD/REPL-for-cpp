@@ -1,9 +1,11 @@
+#include "flags/flags.hpp"
+#include "multiline/codeblock.hpp"
+
 #include <dlfcn.h>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <vector>
-#include <memory>
 
 const std::string LIB = "lib";
 const std::string EXT = ".so";
@@ -31,18 +33,24 @@ std::string get_library_name(int id) {
 
 void load_and_run(int id) {
     std::string lib_name = get_library_name(id);
-    using func_type = void(*)();
+    using func_type = void (*)();
     auto so = dlopen(lib_name.c_str(), RTLD_LAZY);
     auto f = reinterpret_cast<func_type>(dlsym(so, "_Z3foov"));
     f();
     dlclose(so);
 }
 
-void generate_source_file(const std::vector<std::string> &lines, std::ofstream &file) {
-    // TODO: remove next lines
-    file << "#include <iostream>" << std::endl;
+void generate_source_file(const std::vector<std::string> &includes,
+                          const std::vector<CodeBlock> &blocks,
+                          const std::vector<std::string> &lines,
+                          std::ofstream &file) {
+    for (const std::string& s : includes){
+        file << s << std::endl;
+    }
     file << std::endl;
-    // TODO: add header includes to the beginning of the file
+    for (CodeBlock block : blocks){
+        block.add_to_file(file);
+    }
     std::string function_header = "void " + METHOD_NAME + "() {";
     file << function_header << std::endl;
     for (const std::string &line: lines) {
@@ -64,16 +72,37 @@ int main(int argc, char **argv) {
     int id = 0;
 
     std::vector<std::string> lines;
+    std::vector<std::string> includes;
+    std::vector<CodeBlock> blocks;
 
     while (getline(std::cin, current_line)) {
+
+        FLAG f = check_for_flag(current_line);
+
+        switch (f) {
+            case SIGNATURE:
+                break; // TODO
+            case LOAD:
+                load(current_line, includes);
+                break;
+            case CREATE_OBJECT:{
+                CodeBlock block = CodeBlock::create_block();
+                blocks.push_back(block);
+                break;
+            }
+            case EXIT:
+                return 0;
+            case DEFAULT:
+                lines.push_back(current_line);
+                break;
+        }
+
         std::string lib_name = get_library_name(id);
         std::string source_file_name = get_source_file_name(id);
 
         std::ofstream source_file(source_file_name);
 
-        lines.push_back(current_line);
-
-        generate_source_file(lines, source_file);
+        generate_source_file(includes, blocks, lines, source_file);
 
         source_file.close();
 
