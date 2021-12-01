@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FindFunctionDeclarationsByPrefixConsumer.hpp"
+#include "FindFunctionSignaturesByPrefixConsumer.hpp"
 
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/RecursiveASTVisitor.h"
@@ -10,9 +10,9 @@
 
 namespace ast_tools {
 
-    class FindFunctionDeclarationsByPrefixAction : public clang::ASTFrontendAction {
+    class FindFunctionSignaturesByPrefixAction : public clang::ASTFrontendAction {
     public:
-        explicit FindFunctionDeclarationsByPrefixAction(
+        explicit FindFunctionSignaturesByPrefixAction(
                 std::string prefix,
                 std::vector<std::string>& signatures
         ) : prefix_(std::move(prefix)), signatures_(signatures) {}

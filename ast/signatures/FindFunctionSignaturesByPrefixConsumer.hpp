@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FindFunctionDeclarationsByPrefixVisitor.hpp"
+#include "FindFunctionSignaturesByPrefixVisitor.hpp"
 
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/RecursiveASTVisitor.h"
@@ -9,9 +9,9 @@
 #include "clang/Tooling/Tooling.h"
 
 namespace ast_tools {
-    class FindFunctionDeclarationsByPrefixConsumer : public clang::ASTConsumer {
+    class FindFunctionSignaturesByPrefixConsumer : public clang::ASTConsumer {
     public:
-        explicit FindFunctionDeclarationsByPrefixConsumer(
+        explicit FindFunctionSignaturesByPrefixConsumer(
                 clang::ASTContext* Context,
                 std::string prefix,
                 std::vector<std::string>& signatures
@@ -19,6 +19,6 @@ namespace ast_tools {
 
         void HandleTranslationUnit(clang::ASTContext& Context) override;
     private:
-        FindFunctionDeclarationsByPrefixVisitor Visitor;
+        FindFunctionSignaturesByPrefixVisitor Visitor;
     };
 }
