@@ -11,5 +11,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -L./libs -Wl,-rpath=./libs")
 
-add_executable(REPL-for-cpp main.cpp)
+add_executable(REPL-for-cpp main.cpp flags/flags.cpp multiline/codeblock.cpp)
 target_link_libraries(REPL-for-cpp dl)
