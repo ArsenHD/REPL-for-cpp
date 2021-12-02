@@ -11,7 +11,7 @@ namespace LibraryUtils {
 
     std::string get_library_name(int id);
 
-    void build_library(const std::string &source, const std::string &library_name);
+    int build_library(const std::string &source, const std::string &library_name);
 
     void load_and_run(int id);
 }

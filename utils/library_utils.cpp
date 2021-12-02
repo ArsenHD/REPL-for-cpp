@@ -1,12 +1,13 @@
 #include "library_utils.hpp"
 
 std::string LibraryUtils::get_library_name(int id) {
-    return "../libs/" + LIB + std::to_string(id) + EXT;
+    return "../cmake-build-debug/gen/libs/" + LIB + std::to_string(id) + EXT;
 }
 
-void LibraryUtils::build_library(const std::string &source, const std::string &library_name) {
-    std::string command = "g++ -fPIC -shared -o " + library_name + " " + source;
-    std::system(command.c_str());
+int LibraryUtils::build_library(const std::string &source, const std::string &library_new) {
+    std::string command = "g++ -fPIC -shared -o " + library_new + " " + source;
+    int out = std::system(command.c_str());
+    return out;
 }
 
 void LibraryUtils::load_and_run(int id) {

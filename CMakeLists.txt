@@ -15,6 +15,7 @@ add_executable(REPL-for-cpp main.cpp
         utils/library_utils.cpp
         utils/code_generator.cpp
         utils/ast_utils.cpp
+        utils/directory_manager.cpp
         flags/flags.cpp multiline/code_block.cpp
         model/file_model.cpp
         )
