@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(ast)
+project(REPL-for-cpp)
 
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_C_FLAGS  -stdlib=libc)
-#set(CMAKE_CXX_FLAGS -stdlib=libc++)
 
 #if (MSVC)
 #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX")
@@ -30,23 +28,17 @@ include(AddLLVM)
 
 include_directories(${LLVM_INCLUDE_DIRS})
 include_directories(${CLANG_INCLUDE_DIRS})
-#include_directories(/usr/lib/llvm-10/include/clang/)
 
 add_definitions(${LLVM_DEFINITIONS})
 add_definitions(${CLANG_DEFINITIONS})
 
-#add_llvm_executable(ast_processing
-#        processing_ast.cpp
-#        signatures/FindFunctionSignaturesByPrefixVisitor.cpp
-#        signatures/FindFunctionSignaturesByPrefixConsumer.cpp
-#        signatures/FindFunctionSignaturesByPrefixAction.cpp
-#        )
 add_llvm_library(ast_processing
         processing_ast.cpp
         signatures/FindFunctionSignaturesByPrefixVisitor.cpp
         signatures/FindFunctionSignaturesByPrefixConsumer.cpp
         signatures/FindFunctionSignaturesByPrefixAction.cpp
         )
+
 target_link_libraries(ast_processing
         PRIVATE
         clangAST

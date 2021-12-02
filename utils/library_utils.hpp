@@ -9,9 +9,13 @@ namespace LibraryUtils {
     const std::string LIB = "lib";
     const std::string EXT = ".so";
 
-    std::string get_library_name(int id);
+    std::string get_library_name();
 
-    int build_library(const std::string &source, const std::string &library_name);
+    int build_library(const std::string &, const std::string &);
 
-    void load_and_run(int id);
+    void load_main_function();
+
+    void *load_variable_by_name(const std::string &);
+
+    size_t get_size_of(const std::string &variable_name);
 }
