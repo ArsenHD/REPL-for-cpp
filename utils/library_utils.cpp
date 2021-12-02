@@ -1,6 +1,6 @@
 #include "library_utils.hpp"
 
-const std::string cxx =
+const std::string CXX =
 #ifdef __clang__
         "clang++";
 #else
@@ -12,7 +12,7 @@ std::string LibraryUtils::get_library_name(int id) {
 }
 
 int LibraryUtils::build_library(const std::string &source, const std::string &library_new) {
-    std::string command = cxx + " -fPIC -shared -o " + library_new + " " + source;
+    std::string command = CXX + " -fPIC -shared -o " + library_new + " " + source;
     int out = std::system(command.c_str());
     return out;
 }
