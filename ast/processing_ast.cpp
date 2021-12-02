@@ -40,21 +40,21 @@ namespace ast_tools {
         return matched_by_name;
     }
 }
-
-int main() {
-    const std::string code = "class C { void foo(int a) {} void bar() {} }; "
-                             "class A { void meh() {} }; "
-                             "class B { void fee(const int a, const int n) {} };";
-    const std::string prefix = "f";
-    auto signatures = GetSignaturesByPrefix(code, prefix);
-
-    for (const auto& signature: signatures) {
-        std::cout << signature << std::endl;
-    }
-
-    const std::string name = "foo";
-    signatures = GetSignaturesByName(code, name);
-    for (const auto& signature: signatures) {
-        std::cout << signature << std::endl;
-    }
-}
+//
+//int main() {
+//    const std::string code = "class C { void foo(int a) {} void bar() {} }; "
+//                             "class A { void meh() {} }; "
+//                             "class B { void fee(const int a, const int n) {} };";
+//    const std::string prefix = "f";
+//    auto signatures = GetSignaturesByPrefix(code, prefix);
+//
+//    for (const auto& signature: signatures) {
+//        std::cout << signature << std::endl;
+//    }
+//
+//    const std::string name = "foo";
+//    signatures = GetSignaturesByName(code, name);
+//    for (const auto& signature: signatures) {
+//        std::cout << signature << std::endl;
+//    }
+//}

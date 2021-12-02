@@ -5,9 +5,12 @@
 #include "multiline/code_block.hpp"
 #include "flags/flags.hpp"
 #include "model/file_model.hpp"
+#include "ast/processing_ast.hpp"
 
 #include <iostream>
 #include <sstream>
+
+using namespace ast_tools;
 
 using namespace Options;
 using namespace SourceUtils;
