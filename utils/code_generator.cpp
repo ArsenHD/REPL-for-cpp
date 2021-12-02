@@ -1,7 +1,7 @@
 #include "code_generator.hpp"
 
 std::string SourceUtils::CodeGenerator::get_source_file_name(int id) {
-    return "../cmake-build-debug/gen/sources/" + SOURCE_FILE + std::to_string(id) + CPP;
+    return "gen/sources/" + SOURCE_FILE + std::to_string(id) + CPP;
 }
 
 void SourceUtils::CodeGenerator::generate_source_file(const FileModel &file_model, std::ofstream &file) const {

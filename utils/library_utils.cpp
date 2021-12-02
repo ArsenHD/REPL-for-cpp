@@ -1,7 +1,7 @@
 #include "library_utils.hpp"
 
 std::string LibraryUtils::get_library_name(int id) {
-    return "../cmake-build-debug/gen/libs/" + LIB + std::to_string(id) + EXT;
+    return "gen/libs/" + LIB + std::to_string(id) + EXT;
 }
 
 int LibraryUtils::build_library(const std::string &source, const std::string &library_new) {
