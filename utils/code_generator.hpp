@@ -9,11 +9,11 @@
 namespace SourceUtils {
     class CodeGenerator {
     public:
-        std::string get_source_file_name(int);
+        std::string get_source_file_name();
 
-        void generate_source_file(const FileModel &, std::ofstream &) const;
+        void generate_source_file(FileModel &, std::ofstream &) const;
 
-        void print_tabulation(std::ofstream &, int) const;
+        void print_indent(std::ofstream &file, int tabs) const;
     };
 
     const std::string SOURCE_FILE = "SOURCE";

@@ -1,3 +1,4 @@
+#include <sstream>
 #include "library_utils.hpp"
 
 const std::string CXX =
@@ -7,8 +8,8 @@ const std::string CXX =
         "g++";
 #endif
 
-std::string LibraryUtils::get_library_name(int id) {
-    return "gen/libs/" + LIB + std::to_string(id) + EXT;
+std::string LibraryUtils::get_library_name() {
+    return "gen/libs/" + LIB + EXT;
 }
 
 int LibraryUtils::build_library(const std::string &source, const std::string &library_new) {
@@ -17,11 +18,33 @@ int LibraryUtils::build_library(const std::string &source, const std::string &li
     return out;
 }
 
-void LibraryUtils::load_and_run(int id) {
-    std::string lib_name = get_library_name(id);
+void LibraryUtils::load_main_function() {
+    std::string lib_name = get_library_name();
     using func_type = void (*)();
     auto so = dlopen(lib_name.c_str(), RTLD_LAZY);
     auto f = reinterpret_cast<func_type>(dlsym(so, "_Z3foov"));
     f();
     dlclose(so);
+}
+
+void *LibraryUtils::load_variable_by_name(const std::string &name) {
+    std::string lib_name = get_library_name();
+    auto so = dlopen(lib_name.c_str(), RTLD_LAZY);
+    void *variable = dlsym(so, name.c_str());
+    dlclose(so);
+    return variable;
+}
+
+size_t LibraryUtils::get_size_of(const std::string &variable_name) {
+    std::string name_length = std::to_string(variable_name.length());
+    std::stringstream function_name_builder;
+    function_name_builder << "_Z" << name_length << "__size_of_" << variable_name << "v";
+    std::string function_name = function_name_builder.str();
+
+    std::string lib_name = get_library_name();
+    auto so = dlopen(lib_name.c_str(), RTLD_LAZY);
+    using func_t = size_t(*)();
+    auto sizeof_func = reinterpret_cast<func_t>(dlsym(so, function_name.c_str()));
+    dlclose(so);
+    return sizeof_func();
 }
