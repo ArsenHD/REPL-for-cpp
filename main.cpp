@@ -1,6 +1,7 @@
 #include "utils/library_utils.hpp"
 #include "utils/code_generator.hpp"
 #include "utils/ast_utils.hpp"
+#include "utils/directory_manager.hpp"
 #include "multiline/code_block.hpp"
 #include "flags/flags.hpp"
 #include "model/file_model.hpp"
@@ -10,13 +11,19 @@
 
 using namespace Options;
 using namespace SourceUtils;
+using namespace DirectoryUtils;
 
 int main(int argc, char **argv) {
+
+    DirectoryUtils::create_dirs();
+
     std::string current_line;
     int id = 0;
 
     auto file_model = FileModel();
     auto code_generator = CodeGenerator();
+
+    auto old_model = file_model;
 
     while (getline(std::cin, current_line)) {
 
@@ -44,6 +51,7 @@ int main(int argc, char **argv) {
                 break;
             }
             case EXIT:
+                DirectoryUtils::clean_up();
                 return 0;
             case DEFAULT:
                 // TODO: if node declaration then:
@@ -60,11 +68,18 @@ int main(int argc, char **argv) {
 
         source_file.close();
 
-        LibraryUtils::build_library(source_file_name, lib_name);
-
-        LibraryUtils::load_and_run(id);
+        int code = LibraryUtils::build_library(source_file_name, lib_name);
+        if (!code) {
+            LibraryUtils::load_and_run(id);
+        } else {
+            id--;
+            file_model = old_model;
+        }
+        old_model = file_model;
         id++;
     }
+
+    DirectoryUtils::clean_up();
 
     return 0;
 }

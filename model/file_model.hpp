@@ -11,6 +11,13 @@ public:
 
     ~FileModel() = default;
 
+    FileModel(const FileModel &fileModel) :
+            headers(fileModel.get_headers()),
+            code_blocks(fileModel.get_code_blocks()),
+            last_statement(fileModel.get_last_statement()) {}
+
+    FileModel& operator=(const FileModel& fileModel);
+
     void add_header(const std::string &);
 
     void add_code_block(const CodeBlock &);
@@ -27,4 +34,6 @@ private:
     std::vector<std::string> headers;
     std::vector<CodeBlock> code_blocks;
     std::string last_statement;
+
+    void swap(FileModel&);
 };

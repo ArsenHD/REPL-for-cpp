@@ -1,5 +1,5 @@
 #include "file_model.hpp"
-
+#include <algorithm>
 
 void FileModel::add_header(const std::string &header) {
     headers.push_back(header);
@@ -23,4 +23,16 @@ const std::vector<CodeBlock> &FileModel::get_code_blocks() const {
 
 const std::string &FileModel::get_last_statement() const {
     return last_statement;
+}
+
+FileModel& FileModel::operator=(const FileModel& fileModel) {
+    FileModel copy(fileModel);
+    swap(copy);
+    return *this;
+}
+
+void FileModel::swap(FileModel &other) {
+    std::swap(code_blocks, other.code_blocks);
+    std::swap(headers, other.headers);
+    std::swap(last_statement, other.last_statement);
 }
