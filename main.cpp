@@ -1,11 +1,14 @@
 #include "flags/flags.hpp"
 #include "multiline/codeblock.hpp"
+#include "ast/processing_ast.hpp"
 
 #include <dlfcn.h>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <vector>
+
+using namespace ast_tools;
 
 const std::string LIB = "lib";
 const std::string EXT = ".so";
