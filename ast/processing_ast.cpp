@@ -14,7 +14,7 @@ static llvm::cl::OptionCategory MyToolCategory("my-tool options");
 class LoopPrinter : public MatchFinder::MatchCallback {
 public :
     virtual void run(const MatchFinder::MatchResult &Result) {
-        std::cout << "begin run" << std::endl;
+//        std::cout << "begin run" << std::endl;
         if (const VarDecl *FS = Result.Nodes.getNodeAs<clang::VarDecl>("var_decl")) {
             name = FS->getNameAsString();
 //            std::cout << "in if" << std::endl;
