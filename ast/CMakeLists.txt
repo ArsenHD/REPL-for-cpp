@@ -34,9 +34,17 @@ add_definitions(${CLANG_DEFINITIONS})
 
 add_llvm_library(ast_processing
         processing_ast.cpp
+        names/GetVariableNameByDeclarationVisitor.cpp
+        names/GetVariableNameByDeclarationConsumer.cpp
+        names/GetVariableNameByDeclarationAction.cpp
+        matchers.cpp
         signatures/FindFunctionSignaturesByPrefixVisitor.cpp
         signatures/FindFunctionSignaturesByPrefixConsumer.cpp
         signatures/FindFunctionSignaturesByPrefixAction.cpp
+        check/CheckDeclarationVisitor.cpp
+        check/CheckDeclarationConsumer.cpp
+        check/CheckDeclarationAction.cpp
+        check/DeclarationKind.hpp
         )
 
 target_link_libraries(ast_processing
