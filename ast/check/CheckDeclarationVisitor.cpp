@@ -12,10 +12,7 @@ using namespace ast_tools;
 
 bool CheckDeclarationVisitor::VisitFunctionDecl(clang::FunctionDecl *Declaration) {
     bool in_main = IsInMainFile(Declaration);
-    if (!in_main) {
-        Declaration->dump();
-        return true;
-    }
+    if (!in_main) return true;
 //    return RecursiveASTVisitor::VisitFunctionDecl(Declaration);
 //    std::cout << Declaration->getNameAsString() << std::endl;
     kind = FUNCTION;

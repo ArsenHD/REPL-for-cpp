@@ -37,7 +37,6 @@ add_llvm_library(ast_processing
         names/GetVariableNameByDeclarationVisitor.cpp
         names/GetVariableNameByDeclarationConsumer.cpp
         names/GetVariableNameByDeclarationAction.cpp
-        matchers.cpp
         signatures/FindFunctionSignaturesByPrefixVisitor.cpp
         signatures/FindFunctionSignaturesByPrefixConsumer.cpp
         signatures/FindFunctionSignaturesByPrefixAction.cpp

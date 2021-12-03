@@ -18,7 +18,7 @@ namespace SourceUtils {
 
     const std::string SOURCE_FILE = "SOURCE";
     const std::string CPP = ".cpp";
-    const std::string METHOD_NAME = "foo";
+    const std::string METHOD_NAME = "__repl_function__";
     const std::string TAB = "    ";
     const std::string COUT = "std::cout";
     const std::string ENDL = "std::endl";

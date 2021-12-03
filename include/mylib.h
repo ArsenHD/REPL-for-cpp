@@ -1,1 +1,1 @@
-void foo();
+void __repl_function__();

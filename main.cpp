@@ -19,7 +19,6 @@ using namespace SourceUtils;
 using namespace DirectoryUtils;
 
 int main(int argc, char **argv) {
-
     DirectoryUtils::create_dirs();
 
     std::string current_line;
@@ -32,6 +31,7 @@ int main(int argc, char **argv) {
     auto old_model = file_model;
 
     while (getline(std::cin, current_line)) {
+        std::cout.setstate(std::ios::failbit);
         Options::Flag flag = Options::check_for_flag(current_line);
 
         switch (flag) {
@@ -56,6 +56,7 @@ int main(int argc, char **argv) {
                 break;
             }
             case EVAL: {
+                std::cout.clear();
                 std::string expression = Options::parse_after_flag(current_line);
                 std::stringstream output;
                 output << COUT << " << " << expression << " << " << ENDL << ";";
@@ -67,7 +68,12 @@ int main(int argc, char **argv) {
                 return 0;
             }
             case DEFAULT: {
-                if (!AstUtils::is_variable_declaration(current_line)) {
+                std::string headers;
+                for (auto& s : file_model.get_headers()) {
+                    headers += s + "\n";
+                }
+                headers += current_line;
+                if (!AstUtils::is_variable_declaration(headers)) {
                     file_model.update_last_statement(current_line);
                 }
                 break;
