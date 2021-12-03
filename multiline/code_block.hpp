@@ -12,11 +12,11 @@ public:
 
     void add_line(const std::string &line);
 
-    void write_to(std::ofstream &file) const;
+    void write_to(std::ostream &file) const;
 
     [[nodiscard]] std::vector<std::string> get_lines() const;
 
-    static CodeBlock read_block();
+    static std::string read_block();
 
 private:
     std::vector<std::string> lines_;

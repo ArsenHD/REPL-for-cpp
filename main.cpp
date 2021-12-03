@@ -37,7 +37,8 @@ int main(int argc, char **argv) {
         switch (flag) {
             case SIGNATURE: {
                 std::string name = Options::parse_after_flag(current_line);
-                std::string signature = AstUtils::get_function_signature_by_name(name);
+                std::string current_source = file_model.to_string();
+                std::vector<std::string> signatures = AstUtils::get_function_signatures_by_name(current_source, name);
                 break;
             }
             case LOAD: {
@@ -45,8 +46,13 @@ int main(int argc, char **argv) {
                 break;
             }
             case CREATE_OBJECT: {
-                CodeBlock block = CodeBlock::read_block();
-                file_model.add_code_block(block);
+                std::string block = CodeBlock::read_block();
+                if (CheckIsFunction(block)) {
+                    file_model.add_function(block);
+                } else if (CheckIsClass(block)) {
+                    file_model.add_record(block);
+                }
+//                file_model.add_code_block(block);
                 break;
             }
             case EVAL: {
@@ -68,13 +74,22 @@ int main(int argc, char **argv) {
             }
         }
 
+        if (flag != DEFAULT && flag != EVAL) {
+            continue;
+        }
+
         for (auto& declaration : file_model.get_variable_declarations()) {
             std::string variable_name = file_model.get_variable_name_by_declaration(declaration);
-            void *memory = LibraryUtils::load_variable_by_name(variable_name);
+            size_t size = LibraryUtils::get_size_of(variable_name);
+            void *memory = malloc(size);
+            void *so = nullptr;
+            void *variable_memory = LibraryUtils::load_variable_by_name(so, variable_name);
+            memcpy(memory, variable_memory, size);
+            dlclose(so);
             memory_state.insert(std::make_pair(variable_name, memory));
         }
 
-        if (AstUtils::is_variable_declaration(current_line)) {
+        if (flag == DEFAULT && AstUtils::is_variable_declaration(current_line)) {
             file_model.add_variable_declaration(current_line);
         }
 
@@ -91,12 +106,13 @@ int main(int argc, char **argv) {
         if (!code) {
             // now that the new library is built, we assign cached values to the variables
             for (auto &state: memory_state) {
-                std::string declaration = state.first;
-                std::string variable = file_model.get_variable_name_by_declaration(declaration);
+                std::string variable = state.first;
                 void *memory = state.second;
-                void *new_memory = LibraryUtils::load_variable_by_name(variable);
+                void *so = nullptr;
+                void *new_memory = LibraryUtils::load_variable_by_name(so, variable);
                 size_t size = LibraryUtils::get_size_of(variable);
                 memcpy(new_memory, memory, size);
+                dlclose(so);
             }
 
             LibraryUtils::load_main_function();

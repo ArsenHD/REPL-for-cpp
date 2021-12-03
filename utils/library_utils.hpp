@@ -15,7 +15,7 @@ namespace LibraryUtils {
 
     void load_main_function();
 
-    void *load_variable_by_name(const std::string &);
+    void *load_variable_by_name(void *&, const std::string &);
 
     size_t get_size_of(const std::string &variable_name);
 }
