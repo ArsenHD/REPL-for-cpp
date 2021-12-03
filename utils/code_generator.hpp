@@ -11,9 +11,9 @@ namespace SourceUtils {
     public:
         std::string get_source_file_name();
 
-        void generate_source_file(FileModel &, std::ofstream &) const;
+        void generate_source_file(FileModel &, std::ostream &) const;
 
-        void print_indent(std::ofstream &file, int tabs) const;
+        void print_indent(std::ostream &file, int tabs) const;
     };
 
     const std::string SOURCE_FILE = "SOURCE";
